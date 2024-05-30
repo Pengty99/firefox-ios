@@ -681,6 +681,8 @@ class BrowserCoordinator: BaseCoordinator,
         }
 
         let navigationController = DismissableNavigationViewController()
+        navigationController.sheetPresentationController?.prefersGrabberVisible = true
+        navigationController.sheetPresentationController?.detents = [.medium(), .large()]
         let coordinator = MicrosurveyCoordinator(
             model: model,
             router: DefaultRouter(

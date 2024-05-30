@@ -32,7 +32,7 @@ class MicrosurveyTableViewCell: UITableViewCell, ReusableCell, ThemeApplicable {
     private lazy var radioButton: UIImageView = .build { imageView in
         imageView.contentMode = .scaleAspectFit
         imageView.image = UIImage(named: UX.Images.notSelected)
-        imageView.accessibilityIdentifier = AccessibilityIdentifiers.Microsurvey.Survey.radioButton
+        imageView.isAccessibilityElement = false
     }
 
     private lazy var optionLabel: UILabel = .build { label in
@@ -40,6 +40,7 @@ class MicrosurveyTableViewCell: UITableViewCell, ReusableCell, ThemeApplicable {
         label.font = FXFontStyles.Regular.body.scaledFont()
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
+        label.isAccessibilityElement = false
     }
 
     var checked = false {
@@ -47,13 +48,18 @@ class MicrosurveyTableViewCell: UITableViewCell, ReusableCell, ThemeApplicable {
             let checkedButton = UIImage(named: UX.Images.selected)
             let uncheckedButton = UIImage(named: UX.Images.notSelected)
             self.radioButton.image = checked ? checkedButton : uncheckedButton
+            accessibilityValue = checked ? "selected" : "unselected"
         }
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupLayout()
-        self.selectionStyle = .none
+        selectionStyle = .none
+        isAccessibilityElement = true
+        accessibilityIdentifier  = AccessibilityIdentifiers.Microsurvey.Survey.radioButton
+        accessibilityTraits.insert(.button)
+        accessibilityValue = "unselected"
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -93,6 +99,7 @@ class MicrosurveyTableViewCell: UITableViewCell, ReusableCell, ThemeApplicable {
 
     func configure(_ text: String) {
         optionLabel.text = text
+        accessibilityLabel = optionLabel.text
     }
 
     // MARK: - ThemeApplicable

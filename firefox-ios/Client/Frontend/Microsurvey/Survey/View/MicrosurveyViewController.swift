@@ -136,7 +136,7 @@ final class MicrosurveyViewController: UIViewController,
         configureUI()
         setupLayout()
         accessibilityLabel = "Survey"
-        accessibilityIdentifier = AccessibilityIdentifiers.Microsurvey.Survey.surveyView
+        view.accessibilityIdentifier = AccessibilityIdentifiers.Microsurvey.Survey.surveyView
     }
 
     // MARK: Redux
