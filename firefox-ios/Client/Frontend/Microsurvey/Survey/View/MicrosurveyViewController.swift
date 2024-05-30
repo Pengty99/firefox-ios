@@ -44,6 +44,11 @@ final class MicrosurveyViewController: UIViewController,
         )
     }
 
+    private var logoSize: CGSize {
+        let contentSizeCategory = UIApplication.shared.preferredContentSizeCategory
+        return contentSizeCategory.isAccessibilityCategory ? UX.logoLargeSize : UX.logoSize
+    }
+
     private lazy var headerView: UIStackView = .build { stack in
         stack.distribution = .fillProportionally
         stack.axis = .horizontal
@@ -54,7 +59,7 @@ final class MicrosurveyViewController: UIViewController,
     private lazy var logoImage: UIImageView = .build { imageView in
         imageView.image = UIImage(imageLiteralResourceName: ImageIdentifiers.homeHeaderLogoBall)
         imageView.contentMode = .scaleAspectFit
-        // TODO: FXIOS-9028: Add A11y strings
+        imageView.accessibilityLabel = "Firefox Logo"
         imageView.accessibilityIdentifier = AccessibilityIdentifiers.Microsurvey.Survey.firefoxLogo
     }
 
@@ -130,6 +135,8 @@ final class MicrosurveyViewController: UIViewController,
         subscribeToRedux()
         configureUI()
         setupLayout()
+        accessibilityLabel = "Survey"
+        accessibilityIdentifier = AccessibilityIdentifiers.Microsurvey.Survey.surveyView
     }
 
     // MARK: Redux
@@ -206,8 +213,8 @@ final class MicrosurveyViewController: UIViewController,
 
         view.addSubviews(headerView, scrollView)
 
-        logoWidthConstraint = logoImage.widthAnchor.constraint(equalToConstant: UX.logoSize.width)
-        logoHeightConstraint = logoImage.heightAnchor.constraint(equalToConstant: UX.logoSize.height)
+        logoWidthConstraint = logoImage.widthAnchor.constraint(equalToConstant: logoSize.width)
+        logoHeightConstraint = logoImage.heightAnchor.constraint(equalToConstant: logoSize.height)
         logoWidthConstraint?.isActive = true
         logoHeightConstraint?.isActive = true
 
@@ -255,8 +262,6 @@ final class MicrosurveyViewController: UIViewController,
     }
 
     private func adjustIconSize() {
-        let contentSizeCategory = UIApplication.shared.preferredContentSizeCategory
-        let logoSize = contentSizeCategory.isAccessibilityCategory ? UX.logoLargeSize : UX.logoSize
         logoWidthConstraint?.constant = logoSize.width
         logoHeightConstraint?.constant = logoSize.height
     }

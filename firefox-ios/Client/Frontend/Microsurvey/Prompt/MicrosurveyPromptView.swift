@@ -47,12 +47,19 @@ class MicrosurveyPromptView: UIView, ThemeApplicable, Notifiable {
     private var logoWidthConstraint: NSLayoutConstraint?
     private var logoHeightConstraint: NSLayoutConstraint?
 
+    private var logoSize: CGSize {
+        let contentSizeCategory = UIApplication.shared.preferredContentSizeCategory
+        return contentSizeCategory.isAccessibilityCategory ? UX.logoLargeSize : UX.logoSize
+    }
+
     private let windowUUID: WindowUUID
     var notificationCenter: NotificationProtocol
 
     private lazy var logoImage: UIImageView = .build { imageView in
         imageView.image = UIImage(imageLiteralResourceName: ImageIdentifiers.homeHeaderLogoBall)
         imageView.contentMode = .scaleAspectFit
+        imageView.accessibilityLabel = "Firefox Logo"
+        imageView.accessibilityIdentifier = AccessibilityIdentifiers.Microsurvey.Prompt.firefoxLogo
     }
 
     private var titleLabel: UILabel = .build { label in
@@ -111,6 +118,8 @@ class MicrosurveyPromptView: UIView, ThemeApplicable, Notifiable {
                            observing: [.DynamicFontChanged])
         configure(with: state)
         setupView()
+        accessibilityLabel = "Survey"
+        accessibilityIdentifier = AccessibilityIdentifiers.Microsurvey.Prompt.promptView
     }
 
     private func configure(with state: MicrosurveyPromptState) {
@@ -138,8 +147,8 @@ class MicrosurveyPromptView: UIView, ThemeApplicable, Notifiable {
         addSubview(toastView)
         leadingConstraint = toastView.leadingAnchor.constraint(equalTo: leadingAnchor)
         trailingConstraint = toastView.trailingAnchor.constraint(equalTo: trailingAnchor)
-        logoWidthConstraint = logoImage.widthAnchor.constraint(equalToConstant: UX.logoSize.width)
-        logoHeightConstraint = logoImage.heightAnchor.constraint(equalToConstant: UX.logoSize.height)
+        logoWidthConstraint = logoImage.widthAnchor.constraint(equalToConstant: logoSize.width)
+        logoHeightConstraint = logoImage.heightAnchor.constraint(equalToConstant: logoSize.height)
 
         leadingConstraint?.isActive = true
         trailingConstraint?.isActive = true
@@ -174,8 +183,6 @@ class MicrosurveyPromptView: UIView, ThemeApplicable, Notifiable {
     }
 
     private func adjustIconSize() {
-        let contentSizeCategory = UIApplication.shared.preferredContentSizeCategory
-        let logoSize = contentSizeCategory.isAccessibilityCategory ? UX.logoLargeSize : UX.logoSize
         logoWidthConstraint?.constant = logoSize.width
         logoHeightConstraint?.constant = logoSize.height
     }
