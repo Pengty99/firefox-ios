@@ -16,6 +16,7 @@ class MicrosurveyTableView: UITableView {
         register(cellType: MicrosurveyTableViewCell.self)
         rowHeight = UITableView.automaticDimension
         shouldGroupAccessibilityChildren
+        separatorInset = .zero
     }
 
     required init?(coder: NSCoder) {
