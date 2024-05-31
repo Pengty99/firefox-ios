@@ -42,6 +42,7 @@ final class MicrosurveyViewController: UIViewController,
             bottom: -16,
             trailing: -16
         )
+        static let contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 0, bottom: 12, trailing: 0)
     }
 
     private var logoSize: CGSize {
@@ -176,6 +177,11 @@ final class MicrosurveyViewController: UIViewController,
         applyTheme()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIAccessibility.post(notification: .screenChanged, argument: headerLabel)
+    }
+
     deinit {
         unsubscribeFromRedux()
         tableView.removeFromSuperview()
@@ -192,7 +198,7 @@ final class MicrosurveyViewController: UIViewController,
             title: .Microsurvey.Survey.PrivacyPolicyLinkButtonTitle,
             a11yIdentifier: AccessibilityIdentifiers.Microsurvey.Survey.privacyPolicyLink,
             font: FXFontStyles.Regular.caption2.scaledFont(),
-            contentInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0),
+            contentInsets: UX.contentInsets,
             contentHorizontalAlignment: .center
         )
         privacyPolicyButton.configure(viewModel: privacyPolicyButtonViewModel)
